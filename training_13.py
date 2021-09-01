@@ -26,19 +26,27 @@ Constraints:
 -105 <= nums[i] <= 105
 '''
 
-from itertools import combinations
 class Solution:
     def threeSum(self, nums: List[int]) -> List[List[int]]:
 #         a + b + c = 0 -> a + b = -c
-        arr = []
-        results = []    
-        if len(nums) > 0:
-            for r in range(0,len(nums)+1):        
-                arr += list(combinations(nums, 3))
-            
-            for n in arr:
-                if n[0] != n[1] and n[0] != n[2] and n[1] != n[2]:
-                    if n[0] + n[1] + n[2] == 0:
-                        if n not in results:
-                            results.append(n)
-        return results
+        nums.sort()
+        output = []
+        j = 1
+        
+        for i in range(len(nums)):
+            # if i != 0 and nums[i] != nums[i-1]:
+            #     continue
+            j = i + 1
+            k = len(nums) - 1
+            while j < k:
+                if nums[i] + nums[j] + nums[k] == 0:
+                    if [nums[i], nums[j], nums[k]] not in output:
+                        output.append([nums[i], nums[j], nums[k]])
+                    j += 1
+                    while j < k and nums[j] == nums[j-1]:
+                        j += 1
+                elif nums[i] + nums[j] + nums[k] < 0:
+                    j += 1
+                else:
+                    k -= 1
+        return output
